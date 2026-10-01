@@ -4,12 +4,12 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, si
 import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, addDoc, query, where, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyDcX61c9tZLKsmsfUvp3AFu5VQqWeZTxlE",
+  authDomain: "trembogym-fbaf7.firebaseapp.com",
+  projectId: "trembogym-fbaf7",
+  storageBucket: "trembogym-fbaf7.firebasestorage.app",
+  messagingSenderId: "38989406108",
+  appId: "1:38989406108:web:..."
 };
 
 // Si la apiKey no es válida, la app podría fallar, 
@@ -17,11 +17,11 @@ const firebaseConfig = {
 let app, auth, db;
 
 try {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
 } catch (e) {
-    console.warn("Firebase no está configurado. Añade tus credenciales en js/firebase-config.js", e);
+  console.warn("Firebase no está configurado. Añade tus credenciales en js/firebase-config.js", e);
 }
 
 export { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, collection, doc, setDoc, getDoc, getDocs, updateDoc, addDoc, query, where, Timestamp };

@@ -1,21 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Finanzas Personales</title>
-    <script type="module" crossorigin src="/mis-cuentas/assets/index-BoSgoQG_.js"></script>
-    <link rel="modulepreload" crossorigin href="/mis-cuentas/assets/rolldown-runtime-hePW80VL.js">
-    <link rel="modulepreload" crossorigin href="/mis-cuentas/assets/buildMatchPatternFn-Dp77wcrT.js">
-    <link rel="modulepreload" crossorigin href="/mis-cuentas/assets/locale-DJ7dmS_y.js">
-    <link rel="modulepreload" crossorigin href="/mis-cuentas/assets/index-BoSgoQG_.js">
-    <link rel="modulepreload" crossorigin href="/mis-cuentas/assets/date-fns-D4ANrGUC.js">
-    <link rel="stylesheet" crossorigin href="/mis-cuentas/assets/index-Dq811ccW.css">
-  <link rel="manifest" href="/mis-cuentas/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/mis-cuentas/registerSW.js"></script></head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TremboGym - PWA Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js para estadísticas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <!-- Capa de Autenticación -->
+    <div id="auth-view" class="view active">
+        <div class="glass-card auth-card">
+            <h1>TremboGym</h1>
+            <p>Tu progreso, sin límites.</p>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Correo electrónico">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Contraseña">
+            </div>
+            <button id="btn-login" class="btn-primary">Iniciar Sesión</button>
+            <button id="btn-register" class="btn-secondary">Registrarse</button>
+        </div>
+    </div>
+
+    <!-- Navegación Principal (Visible solo al estar logueado) -->
+    <nav id="main-nav" class="hidden">
+        <button id="nav-home" class="nav-btn active">🏠 Día a Día</button>
+        <button id="nav-edit" class="nav-btn">✏️ Rutinas</button>
+        <button id="nav-stats" class="nav-btn">📊 Historial</button>
+        <button id="nav-logout" class="nav-btn">Cerrar Sesión</button>
+    </nav>
+
+    <!-- Vista Principal: Día a Día -->
+    <div id="home-view" class="view hidden">
+        <header class="app-header">
+            <h2 id="today-title">Cargando...</h2>
+            <button id="btn-seed" class="btn-warning">Cargar Datos de Prueba</button>
+        </header>
+
+        <main id="home-main-content">
+            <div id="start-workout-container" class="center-content">
+                <button id="btn-start-workout" class="btn-massive hidden">Empezar Entrenamiento</button>
+                <p id="no-workout-msg" class="hidden">Hoy es día de descanso. ¡Recupérate!</p>
+            </div>
+
+            <!-- Interfaz de Entrenamiento Activo -->
+            <div id="active-workout-container" class="hidden">
+                <div class="workout-header">
+                    <button id="btn-extended-view" class="btn-secondary">Vista Extendida</button>
+                    <div id="timer">00:00</div>
+                </div>
+                
+                <div class="exercise-focus-card glass-card">
+                    <h3 id="current-exercise-name">Nombre del Ejercicio</h3>
+                    
+                    <div class="weight-selector hidden" id="weight-selector-container">
+                        <label>¿Qué peso usarás hoy?</label>
+                        <select id="weight-dropdown"></select>
+                    </div>
+
+                    <div id="sets-container">
+                        <!-- Las series se renderizarán aquí dinámicamente -->
+                    </div>
+
+                    <button id="btn-next-exercise" class="btn-primary mt-2">Siguiente Ejercicio ➡️</button>
+                </div>
+                
+                <button id="btn-finish-workout" class="btn-danger mt-2">Finalizar Entrenamiento</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Vista Extendida -->
+    <div id="extended-view-modal" class="modal hidden">
+        <div class="modal-content glass-card">
+            <h3>Rutina Completa</h3>
+            <ul id="extended-exercise-list"></ul>
+            <button id="btn-close-extended" class="btn-secondary mt-2">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Resto de vistas: Rutinas, Historial... (Simplificadas para esta base) -->
+    <div id="edit-view" class="view hidden">
+        <h2>Editor de Rutinas</h2>
+        <p>Selecciona un día para editar:</p>
+        <select id="edit-day-select">
+            <option value="monday">Lunes</option>
+            <option value="tuesday">Martes</option>
+            <option value="wednesday">Miércoles</option>
+            <option value="thursday">Jueves</option>
+            <option value="friday">Viernes</option>
+            <option value="saturday">Sábado</option>
+            <option value="sunday">Domingo</option>
+        </select>
+        <div id="edit-routine-list"></div>
+    </div>
+
+    <div id="stats-view" class="view hidden">
+        <h2>Historial y Progreso</h2>
+        <div class="glass-card">
+            <canvas id="progressChart"></canvas>
+        </div>
+        <button id="btn-ai-advice" class="btn-primary mt-2">✨ Consejo IA</button>
+    </div>
+
+    <!-- Firebase SDK (Módulos) -->
+    <script type="module" src="js/app.js"></script>
+</body>
 </html>
