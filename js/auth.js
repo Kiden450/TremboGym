@@ -1,8 +1,8 @@
-import { auth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from './firebase-config.js';
+import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from './firebase-config.js';
 
 export const initAuth = (onLoginCallback) => {
     const btnLogin = document.getElementById('btn-login');
-    const btnGoogle = document.getElementById('btn-google');
+    const btnRegister = document.getElementById('btn-register');
     const btnLogout = document.getElementById('nav-logout');
     
     // UI Elements
@@ -43,12 +43,17 @@ export const initAuth = (onLoginCallback) => {
         }
     });
 
-    btnGoogle.addEventListener('click', async () => {
-        const provider = new GoogleAuthProvider();
+    btnRegister.addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        if (!email || !pass) {
+            alert("Por favor, introduce correo y contraseña para registrarte.");
+            return;
+        }
         try {
-            await signInWithPopup(auth, provider);
+            await createUserWithEmailAndPassword(auth, email, pass);
         } catch (error) {
-            alert("Error con Google: " + error.message);
+            alert("Error al registrarse: " + error.message);
         }
     });
 
