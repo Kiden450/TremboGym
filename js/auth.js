@@ -33,31 +33,56 @@ export const initAuth = (onLoginCallback) => {
         }
     });
 
-    btnLogin.addEventListener('click', async () => {
+    btnLogin.addEventListener('click', async (e) => {
+        e.preventDefault();
+        console.log("Botón Iniciar Sesión clickeado");
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
+        
+        if (!email || !pass) {
+            alert("Por favor, introduce correo y contraseña.");
+            return;
+        }
+
         try {
             await signInWithEmailAndPassword(auth, email, pass);
+            console.log("Inicio de sesión exitoso");
         } catch (error) {
+            console.error("Error Login:", error);
             alert("Error al iniciar sesión: " + error.message);
         }
     });
 
-    btnRegister.addEventListener('click', async () => {
+    btnRegister.addEventListener('click', async (e) => {
+        e.preventDefault();
+        console.log("Botón Registrarse clickeado");
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
+        
         if (!email || !pass) {
             alert("Por favor, introduce correo y contraseña para registrarte.");
             return;
         }
+
         try {
-            await createUserWithEmailAndPassword(auth, email, pass);
+            console.log("Intentando crear usuario en Firebase...");
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            console.log("Registro exitoso, usuario creado:", userCredential.user.uid);
+            alert("¡Cuenta creada con éxito! Iniciando sesión...");
         } catch (error) {
-            alert("Error al registrarse: " + error.message);
+            console.error("Error Registro:", error);
+            // Manejo de errores específicos comunes de Firebase
+            let msg = error.message;
+            if (error.code === 'auth/email-already-in-use') msg = "Este correo ya está registrado.";
+            if (error.code === 'auth/weak-password') msg = "La contraseña debe tener al menos 6 caracteres.";
+            if (error.code === 'auth/invalid-email') msg = "El formato del correo es inválido.";
+            
+            alert("Error al registrarse:\n" + msg);
         }
     });
 
-    btnLogout.addEventListener('click', async () => {
+    btnLogout.addEventListener('click', async (e) => {
+        e.preventDefault();
         await signOut(auth);
     });
 };
