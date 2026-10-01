@@ -136,3 +136,38 @@ button:active { transform: scale(0.98); }
 #extended-exercise-list li.current { border-left: 4px solid var(--primary); background: rgba(59, 130, 246, 0.1); }
 #extended-exercise-list li.completed { opacity: 0.6; }
 .status-icon { font-size: 1.2rem; }
+
+/* Day Selector (Edit View) */
+.day-selector-container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: none; /* Firefox */
+}
+.day-selector-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+.day-btn {
+    flex: 0 0 auto;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 0;
+    transition: all 0.2s ease-in-out;
+}
+.day-btn.weekday {
+    background-color: var(--primary);
+    color: white;
+}
+.day-btn.weekend {
+    background-color: #bfdbfe; /* Azul Pálido/Claro */
+    color: #1e3a8a; /* Contraste oscuro */
+}
+.day-btn.active-day {
+    border-color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}

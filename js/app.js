@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
             navButtons.forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
 
-            // Hide all views except auth
+            // Hide absolutely all views
             views.forEach(v => {
-                if (v.id !== 'auth-view') v.classList.add('hidden');
+                v.classList.add('hidden');
                 v.classList.remove('active');
             });
 
@@ -63,6 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btn-close-extended').addEventListener('click', () => {
         modal.classList.add('hidden');
+    });
+
+    // Day selector logic for Edit View
+    const dayButtons = document.querySelectorAll('.day-btn');
+    dayButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            dayButtons.forEach(b => b.classList.remove('active-day'));
+            e.target.classList.add('active-day');
+        });
     });
 });
 

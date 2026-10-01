@@ -11,17 +11,23 @@ export const initAuth = (onLoginCallback) => {
     const homeView = document.getElementById('home-view');
 
     const showApp = (user) => {
+        authView.classList.add('hidden');
         authView.classList.remove('active');
         mainNav.classList.remove('hidden');
+        homeView.classList.remove('hidden');
         homeView.classList.add('active');
         onLoginCallback(user);
     };
 
     const showLogin = () => {
+        authView.classList.remove('hidden');
         authView.classList.add('active');
         mainNav.classList.add('hidden');
         document.querySelectorAll('.view').forEach(v => {
-            if(v.id !== 'auth-view') v.classList.remove('active');
+            if(v.id !== 'auth-view') {
+                v.classList.remove('active');
+                v.classList.add('hidden');
+            }
         });
     };
 

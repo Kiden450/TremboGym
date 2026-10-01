@@ -89,15 +89,15 @@
     <div id="edit-view" class="view hidden">
         <h2>Editor de Rutinas</h2>
         <p>Selecciona un día para editar:</p>
-        <select id="edit-day-select">
-            <option value="monday">Lunes</option>
-            <option value="tuesday">Martes</option>
-            <option value="wednesday">Miércoles</option>
-            <option value="thursday">Jueves</option>
-            <option value="friday">Viernes</option>
-            <option value="saturday">Sábado</option>
-            <option value="sunday">Domingo</option>
-        </select>
+        <div id="day-selector" class="day-selector-container">
+            <button class="day-btn weekday active-day" data-day="monday">Lun</button>
+            <button class="day-btn weekday" data-day="tuesday">Mar</button>
+            <button class="day-btn weekday" data-day="wednesday">Mié</button>
+            <button class="day-btn weekday" data-day="thursday">Jue</button>
+            <button class="day-btn weekday" data-day="friday">Vie</button>
+            <button class="day-btn weekend" data-day="saturday">Sáb</button>
+            <button class="day-btn weekend" data-day="sunday">Dom</button>
+        </div>
         <div id="edit-routine-list"></div>
     </div>
 
